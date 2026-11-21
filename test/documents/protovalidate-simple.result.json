@@ -41,7 +41,7 @@
                     "description": "x must be greater than or equal to 20"
                   },
                   "nd": {
-                    "type": "number",
+                    "type": "integer",
                     "format": "fixed32",
                     "x-primitive": "fixed32",
                     "minimum": 30,
@@ -873,7 +873,7 @@
                   "description": "x must be greater than or equal to 20"
                 },
                 "nd": {
-                  "type": "number",
+                  "type": "integer",
                   "format": "fixed32",
                   "x-primitive": "fixed32",
                   "minimum": 30,

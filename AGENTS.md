@@ -103,6 +103,8 @@ walks the tree. Core rules:
   referencing an enum also gets `x-type`.
 - **`repeated` field** -> `{ type: 'array', items: <field schema> }`. Supports `@MinItems`/`@MaxItems`
   and validator-framework `min_items`/`max_items`/`unique`/`items`.
+- **`map<K, V>` field** -> `{ type: 'object', additionalProperties: <schema of V> }`; the field comment
+  becomes the object's `description`.
 - **`oneof` with 2+ members** -> a property named after the `oneof` holding `{ oneOf: [...] }`; each
   variant carries `x-oneof-item` = originating field name. Single-member synthetic `oneof`s (proto3
   `optional`, names starting with `_`) are filtered out.

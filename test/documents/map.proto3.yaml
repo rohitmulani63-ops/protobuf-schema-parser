@@ -1,0 +1,40 @@
+asyncapi: 3.0.0
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  userSignedup:
+    address: user/signedup
+    messages:
+      UserSignedUp:
+        $ref: '#/components/messages/UserSignedUp'
+operations:
+  sendUserSignedup:
+    action: send
+    channel:
+      $ref: '#/channels/userSignedup'
+    messages:
+      - $ref: '#/channels/userSignedup/messages/UserSignedUp'
+components:
+  messages:
+    UserSignedUp:
+      payload:
+        schemaFormat: application/vnd.google.protobuf;version=3
+        schema: |
+          syntax = "proto3";
+          package Example;
+
+          message Item {
+            string name = 1;
+          }
+
+          message M {
+            // Count per name.
+            map<string, int32> counts = 1;
+            map<int32, Item> items_by_id = 2;
+            fixed32 f32 = 3;
+            sfixed32 sf32 = 4;
+            fixed64 f64 = 5;
+            sfixed64 sf64 = 6;
+          }

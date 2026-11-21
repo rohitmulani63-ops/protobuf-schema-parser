@@ -97,6 +97,7 @@ describe('parse()', function () {
     ['recursion in proto should not lead to a infinity loop', 'recursive.proto3.yaml', 'recursive.proto3.result.json'],
     ['protoc-gen-validate should added as correct validations', 'protoc-gen-validate.yaml', 'protoc-gen-validate.result.json'],
     ['protovalidate should added as correct validations', 'protovalidate-simple.yaml', 'protovalidate-simple.result.json'],
+    ['should parse map fields as objects and fixed-width integers with limits', 'map.proto3.yaml', 'map.proto3.result.json'],
   ])('%s', async function (_testName: string, specFilename: string, resultFilename: string) {
     await parseAndCompareWithResult(specFilename, resultFilename);
   });
