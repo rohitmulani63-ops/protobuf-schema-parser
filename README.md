@@ -21,7 +21,7 @@ equivalent AsyncAPI schema.
 - Works with **Protobuf 2 and Protobuf 3** schemas.
 - Registers for the schema formats
   `application/vnd.google.protobuf;version=2` and `application/vnd.google.protobuf;version=3`.
-- Maps Protobuf messages, scalars, enums, `repeated` fields, `oneof` and nested types to JSON Schema.
+- Maps Protobuf messages, scalars, enums, `repeated` and `map` fields, `oneof` and nested types to JSON Schema.
 - Understands leading comments as descriptions and a set of `@`-annotations for validation, defaults
   and examples.
 - Optionally maps [protoc-gen-validate](https://github.com/bufbuild/protoc-gen-validate) and
@@ -161,6 +161,7 @@ The main mapping rules:
 | Message-typed field | The referenced message compiled inline, plus `x-type` set to the Protobuf type name |
 | `enum` | `{ "type": "string", "enum": [<names>], "x-enum-mapping": { <name>: <number> } }` |
 | `repeated` field | `{ "type": "array", "items": <field schema> }` |
+| `map<K, V>` field | `{ "type": "object", "additionalProperties": <schema of V> }` (JSON object keys are always strings) |
 | `oneof` with 2+ members | A property named after the `oneof` holding `{ "oneOf": [ ... ] }`; each variant carries `x-oneof-item` with the field name |
 | Field / message comment | `description` (with `@`-annotations stripped out). A field comment replaces the comment of the message it references, which moves to `x-type-description` |
 
