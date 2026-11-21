@@ -1,0 +1,39 @@
+name: ci-check-pb170
+# TEMP, fork only (not for upstream): lint, type-check, regenerate fixture results and test.
+on:
+  push:
+    branches: [ci-check-pb170, ci-check-pb170-mustfail]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Type-check (build)
+        run: npm run build
+      - name: Test
+        run: npm test
+      - name: Regenerated results (ubuntu only, for review)
+        if: always() && matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          sed -i 's/const UPDATE_RESULTS = false/const UPDATE_RESULTS = true/' test/parser.spec.ts
+          npx cross-env CI=true jest test/parser.spec.ts || true
+          git checkout -- test/parser.spec.ts
+          git --no-pager diff --stat
+          git --no-pager diff -- test/documents/protoc-gen-validate.result.json
+          echo "===== map.proto3.result.json"
+          cat test/documents/map.proto3.result.json || true
