@@ -311,8 +311,6 @@ class Proto2JsonSchema {
 
         protocGenValidateVisit(properties[field.name], field);
         protoValidateVisit(properties[field.name], field);
-      } else if (field.map) {
-        properties[field.name] = this.compileMapField(field, item, stack.slice());
       } else {
         properties[field.name] = this.compileField(field, item, stack.slice());
       }
@@ -342,24 +340,6 @@ class Proto2JsonSchema {
     // @ts-ignore
     if (obj.required?.length < 1) {
       delete obj.required;
-    }
-
-    return obj;
-  }
-
-  /**
-   * Compiles a protobuf map field to JSON schema. Map keys are always strings in JSON,
-   * so only the value type is described.
-   */
-  private compileMapField(field: protobuf.Field, parentItem: protobuf.Type, stack: string[]): v3.AsyncAPISchemaDefinition {
-    const obj: v3.AsyncAPISchemaDefinition = {
-      type: 'object',
-      additionalProperties: this.compileField(field, parentItem, stack),
-    };
-
-    const desc = this.extractDescription(field.comment);
-    if (desc !== null && desc.length > 0) {
-      obj.description = desc;
     }
 
     return obj;
